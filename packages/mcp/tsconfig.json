@@ -1,0 +1,6 @@
+{
+  "extends": "../../tsconfig.base.json",
+  // nodenext lets this CommonJS package load the ESM-only MCP SDK (Node require(esm))
+  "compilerOptions": { "outDir": "dist", "rootDir": "src", "module": "nodenext", "moduleResolution": "nodenext", "types": ["node"] },
+  "include": ["src"]
+}

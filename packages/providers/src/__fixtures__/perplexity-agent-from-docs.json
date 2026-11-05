@@ -1,0 +1,30 @@
+{
+  "_note": "Shape from docs.perplexity.ai Agent API (quickstart + web-search pages, Nov 2026). Hand-built: no PERPLEXITY_API_KEY yet. Replace with a real recording once a key exists.",
+  "id": "resp_example",
+  "status": "completed",
+  "model": "perplexity/fast",
+  "output": [
+    {
+      "type": "search_results",
+      "queries": ["best AEO agency Phoenix local business", "answer engine optimization agency Arizona"],
+      "results": [
+        { "id": 1, "url": "https://aeo-collective.com/?utm_source=perplexity", "title": "AEO Collective | AI Search Visibility", "snippet": "", "source": "web" },
+        { "id": 2, "url": "https://firstpagesage.com/seo-blog/aeo/", "title": "First Page Sage AEO", "snippet": "", "source": "web" },
+        { "id": 3, "url": "https://www.reddit.com/r/SEO/comments/abc/aeo_agencies/", "title": "AEO agencies thread", "snippet": "", "source": "web" }
+      ]
+    },
+    {
+      "type": "message",
+      "role": "assistant",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "text": "For a Phoenix local business, **AEO Collective** focuses on local AI visibility [web:1]. First Page Sage is a larger option [web:2][web:1]."
+        }
+      ]
+    }
+  ],
+  "usage": { "input_tokens": 1200, "output_tokens": 300, "cost": { "total_cost": 0.00452, "tool_calls_cost": 0.001 } }
+}

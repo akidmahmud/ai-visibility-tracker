@@ -1,0 +1,26 @@
+{
+	email {$ACME_EMAIL}
+	# White-label report domains (handoff §17.13): a certificate is issued on the first visit, and only for
+	# hostnames a workspace registered (the API answers 200 for those, 404 otherwise).
+	on_demand_tls {
+		ask http://api:4000/api/public/domains/check
+	}
+}
+
+# The product itself.
+{$APP_DOMAIN} {
+	encode zstd gzip
+	# Called from outside the browser: crawler-log ingest (Worker / WordPress plugin) and MCP clients.
+	@api path /api/public/* /api/mcp
+	reverse_proxy @api api:4000
+	reverse_proxy web:3000
+}
+
+# Any other hostname: an agency's report domain (CNAME to APP_DOMAIN). The web app serves only /r/* there.
+https:// {
+	tls {
+		on_demand
+	}
+	encode zstd gzip
+	reverse_proxy web:3000
+}

@@ -1,0 +1,35 @@
+packages:
+  - apps/*
+  - packages/*
+allowBuilds:
+  '@prisma/engines': true
+  '@swc/core': true
+  prisma: true
+  '@scarf/scarf': false # telemetry
+  msgpackr-extract: true
+minimumReleaseAgeExclude:
+  - '@vitest/mocker@5.1.0'
+  - '@vitest/spy@5.1.0'
+  - vitest@5.1.0
+  - '@tailwindcss/node@4.3.4'
+  - '@tailwindcss/oxide-android-arm64@4.3.4'
+  - '@tailwindcss/oxide-darwin-arm64@4.3.4'
+  - '@tailwindcss/oxide-darwin-x64@4.3.4'
+  - '@tailwindcss/oxide-freebsd-x64@4.3.4'
+  - '@tailwindcss/oxide-linux-arm-gnueabihf@4.3.4'
+  - '@tailwindcss/oxide-linux-arm64-gnu@4.3.4'
+  - '@tailwindcss/oxide-linux-arm64-musl@4.3.4'
+  - '@tailwindcss/oxide-linux-x64-gnu@4.3.4'
+  - '@tailwindcss/oxide-linux-x64-musl@4.3.4'
+  - '@tailwindcss/oxide-wasm32-wasi@4.3.4'
+  - '@tailwindcss/oxide-win32-arm64-msvc@4.3.4'
+  - '@tailwindcss/oxide-win32-x64-msvc@4.3.4'
+  - '@tailwindcss/oxide@4.3.4'
+  - '@tailwindcss/postcss@4.3.4'
+  - tailwindcss@4.3.4
+  - bullmq@6.5.4
+  - '@ai-sdk/gateway@4.0.135'
+  - '@ai-sdk/google@4.0.111'
+  - '@ai-sdk/openai@4.0.108'
+  - '@ai-sdk/provider-utils@5.0.74'
+  - ai@7.0.162

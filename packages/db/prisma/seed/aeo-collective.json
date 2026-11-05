@@ -1,0 +1,40 @@
+{
+  "_source": "Peekaboo config of the client brand, 2026-11-03",
+  "brand": {
+    "name": "AEO Collective",
+    "websiteUrl": "https://aeo-collective.com/",
+    "description": "Expert Strategies to Boost Your Brand in AI Search",
+    "industry": "Marketing agency (AEO/GEO)",
+    "country": "US",
+    "language": "en",
+    "frequency": "WEEKLY"
+  },
+  "competitors": [
+    "Minuttia",
+    "Animalz",
+    "First Page Sage",
+    "noGood"
+  ],
+  "prompts": [
+    "Best AEO/GEO agency for a Tucson local business?",
+    "Who can help my local business in Scottsdale get mentioned in ChatGPT answers?",
+    "Who can help me with AEO/GEO in Arizona?",
+    "Best GEO/AEO agency for a dentist in Phoenix?",
+    "Best GEO agency for small businesses in Chandler?",
+    "Best ChatGPT optimization company for Arizona local businesses?",
+    "Best Arizona AEO/GEO agency?",
+    "Best AI visibility agency for an electrician in Phoenix?",
+    "Best AI visibility agency for a real estate agent in Scottsdale?",
+    "Best AEO/GEO agency for an arizona local business?",
+    "Best AEO agency for a HVAC company in Phoenix?",
+    "Best AEO/GEO agency for a roofing company in Arizona?",
+    "Best AEO/GEO agency for a Phoenix solar installation company?",
+    "Best AEO/GEO agency for a law firm in Phoenix?",
+    "Best AEO agency for Phoenix local business?",
+    "Best AEO agency for an Arizona real estate agent?",
+    "Best AEO agency for an Arizona psychologist or therapist?",
+    "Best AEO agency for a private practice in Phoenix?",
+    "Best AEO agency for a plumbing company in Phoenix?",
+    "Best AEO agency for a pest control company in Arizona?"
+  ]
+}

@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: avt
+      POSTGRES_PASSWORD: avt
+      POSTGRES_DB: avt
+    ports: ["5433:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U avt"]
+      interval: 5s
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+    volumes: [redisdata:/data]
+volumes:
+  pgdata:
+  redisdata:

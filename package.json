@@ -1,0 +1,20 @@
+{
+  "name": "ai-visibility-tracker",
+  "private": true,
+  "packageManager": "pnpm@11.9.0",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test --concurrency=1",
+    "db:up": "docker compose -f infra/docker-compose.yml up -d",
+    "eval:extraction": "pnpm --filter @avt/extraction eval",
+    "db:migrate": "pnpm --filter @avt/db migrate:dev",
+    "db:test:migrate": "pnpm --filter @avt/db exec -- node -e \"process.loadEnvFile('../../.env');require('child_process').execSync('prisma migrate deploy',{stdio:'inherit',env:{...process.env,DATABASE_URL:process.env.DATABASE_URL_TEST}})\""
+  },
+  "devDependencies": {
+    "turbo": "^2.11.10",
+    "typescript": "~5.9.3"
+  }
+}

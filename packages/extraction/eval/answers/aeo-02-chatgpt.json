@@ -1,0 +1,17 @@
+{
+  "engine": "chatgpt",
+  "industry": "marketing-agency",
+  "prompt": "Best AEO agency for Phoenix local business?",
+  "text": "For a local business in Phoenix, Arizona, I'd shortlist agencies that understand both traditional Local SEO (Google Maps) and AEO (Answer Engine Optimization) — not just agencies that have recently added AI to their marketing pitch.\n\nAEO is about getting your business recommended when someone asks ChatGPT, Gemini, Perplexity, or Google AI questions like \"Who is the best plumber in Phoenix?\"\n\n## My top Phoenix AEO agency shortlist\n\n1. AEO Collective\n\nBest AEO specialist to investigate\n\n- Dedicated AI search visibility focus.\n- Works on brand mentions, authority and AI citations.\n- Published packages reportedly range from $750–$3,450.\n\nSource: 2026 Phoenix AEO agency comparison. [Top AEO and AI SEO Agencies in Arizona for 2026](https://aeo-collective.com/blog/top-6-phoenix-arizona-marketing-agencies-for-aeo-ai-seo-geo-2026/)\n\n[Visit AEO Collective](https://aeo-collective.com/?utm_source=chatgpt.com)\n\n2. Search Control\n\nBest local SEO + AI combination to investigate\n\n- Phoenix-based.\n- Traditional SEO and Google Business Profile optimization.\n- Also markets AI SEO/GEO services.\n\n4.5/5, 8 reviews. [Search Control](https://www.yelp.com/biz/search-control-phoenix?adjust_creative=openai)\n\n3. Digitaleer SEO & Web Design\n\n- Phoenix-based SEO and web design agency.\n- Local SEO and Google Maps expertise.\n- Worth evaluating for the SEO foundation needed for AEO.\n\n5.0/5, 61 reviews. [Digitaleer SEO & Web Design](https://www.google.com/maps/place/Digitaleer%20SEO%20%26%20Web%20Design/data=!4m7!3m6!1s0x872b118885984b09:0x32f5179012f935b8!8m2!3d33.4446979!4d-112.0690150!16s%2Fg%2F11h3bf81mw!19sChIJCUuYhYgRK4cRuDX5EpAX9TI?authuser=0&hl=en&rclk=1)[Top AEO and AI SEO Agencies in Arizona for 2026](https://aeo-collective.com/blog/top-6-phoenix-arizona-marketing-agencies-for-aeo-ai-seo-geo-2026/)\n\n## My recommendation\n\nI would start by interviewing AEO Collective and Search Control.\n\nHowever, don't hire anyone based solely on promises of getting you into ChatGPT. Ask for:\n\n- Evidence of actual ChatGPT and Perplexity citations for clients.\n- Google Maps and Google Business Profile optimization.\n- Local Phoenix keyword and competitor analysis.\n- Monthly AI visibility reporting.\n- Measurable increases in phone calls and qualified leads.\n\n## One question so I can narrow this down\n\nWhat type of local business do you operate in Phoenix?\n\nFor example:\n\n- HVAC / Plumbing / Roofing\n- Dentist / Medical / Healthcare\n- Law firm\n- Real estate\n- Home services\n- Restaurant\n- Other\n\nI can narrow this down to the 3 best-fit AEO agencies for your industry, rather than recommending generic digital marketing companies.",
+  "expected": [
+    "AEO Collective",
+    "Search Control",
+    {
+      "name": "Digitaleer SEO & Web Design",
+      "aliases": [
+        "Digitaleer"
+      ]
+    }
+  ],
+  "labeledBy": "Claude, 2026-11-04 (recommended entities in order of first appearance; AI assistants, Google, Yelp and names only inside citation titles excluded)"
+}

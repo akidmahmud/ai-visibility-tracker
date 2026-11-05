@@ -1,0 +1,15 @@
+{
+  "engine": "google_ai_mode",
+  "industry": "marketing-agency",
+  "prompt": "Best AEO agency for Phoenix local business?",
+  "text": "With AI-driven search (ChatGPT, Perplexity, Google's AI Overviews) rapidly shifting how consumers find local businesses, optimizing for **Answer Engine Optimization (AEO)** and **Generative Engine Optimization (GEO)** is crucial.\n\nTop choices and specialized agencies servicing the Phoenix local market include:\n\n  * **AEO Collective**: Widely recognized as a dedicated player focusing specifically on AEO and GEO strategies tailored for Arizona and Phoenix-area businesses. [Top AEO and AI SEO Agencies in Arizona for 2026](https://aeo-collective.com/blog/top-6-phoenix-arizona-marketing-agencies-for-aeo-ai-seo-geo-2026/)\n\n  * **Posirank**: A strong option if you are looking to blend high-powered traditional local SEO with emerging AI search engine visibility. [Top AEO and AI SEO Agencies in Arizona for 2026](https://aeo-collective.com/blog/top-6-phoenix-arizona-marketing-agencies-for-aeo-ai-seo-geo-2026/)\n\n  * **Painted Brick Digital**: Based nearby in Scottsdale, they have been forward-thinking in expanding traditional regional campaigns into AI-driven search alignment. [Top AEO and AI SEO Agencies in Arizona for 2026](https://aeo-collective.com/blog/top-6-phoenix-arizona-marketing-agencies-for-aeo-ai-seo-geo-2026/)\n\n  * **Knoodle**: A well-established, full-service Phoenix agency integrating modern AI search optimization into comprehensive local marketing packages. [Top AEO and AI SEO Agencies in Arizona for 2026](https://aeo-collective.com/blog/top-6-phoenix-arizona-marketing-agencies-for-aeo-ai-seo-geo-2026/)\n\n  * **Digitaleer**: Known in the local valley market for helping small-to-midsize businesses adapt and understand the transition into AEO. [Top AEO and AI SEO Agencies in Arizona for 2026](https://aeo-collective.com/blog/top-6-phoenix-arizona-marketing-agencies-for-aeo-ai-seo-geo-2026/)\n\n  * **Rocket Media**: A reliable Arizona-centric choice if your local business operates in the home services, contracting, or niche trade spaces. [Top AEO and AI SEO Agencies in Arizona for 2026](https://aeo-collective.com/blog/top-6-phoenix-arizona-marketing-agencies-for-aeo-ai-seo-geo-2026/)\n\nTo help narrow down the best fit, could you tell me:\n\n  * What **industry or niche** is your local business in?\n  * Are you currently running **traditional SEO** or starting fresh?",
+  "expected": [
+    "AEO Collective",
+    "Posirank",
+    "Painted Brick Digital",
+    "Knoodle",
+    "Digitaleer",
+    "Rocket Media"
+  ],
+  "labeledBy": "Claude, 2026-11-04 (recommended entities in order of first appearance; AI assistants, Google, Yelp and names only inside citation titles excluded)"
+}

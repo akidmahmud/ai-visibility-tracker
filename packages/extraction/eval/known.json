@@ -1,0 +1,10 @@
+{
+  "_note": "Known entities passed to extraction for the AEO Collective eval answers (the brand + its tracked competitors).",
+  "marketing-agency": [
+    { "key": "aeo-collective", "name": "AEO Collective", "aliases": [], "domain": "aeo-collective.com" },
+    { "key": "first-page-sage", "name": "First Page Sage", "aliases": [], "domain": "firstpagesage.com" },
+    { "key": "nogood", "name": "noGood", "aliases": ["NoGood"], "domain": "nogood.io" },
+    { "key": "animalz", "name": "Animalz", "aliases": [], "domain": "animalz.co" },
+    { "key": "minuttia", "name": "Minuttia", "aliases": [], "domain": "minuttia.com" }
+  ]
+}

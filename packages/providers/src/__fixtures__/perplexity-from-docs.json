@@ -1,0 +1,15 @@
+{
+  "_note": "Built from the documented Perplexity response shape (cloro docs, Nov 2026). Cloro's Perplexity endpoint returned MODEL_UNAVAILABLE when we tried to record a real one; replace with a real recording once it is back.",
+  "success": true,
+  "result": {
+    "text": "Here are several laptops for programming [cite ] ...",
+    "markdown": "Here are several well-reviewed laptops for programming in 2026. **MacBook Pro 14** is the most common pick for battery life [1], while the **Lenovo ThinkPad X1 Carbon** is preferred for Linux [2][3]. Avoid budget Chromebooks for heavy compile work [cite ].",
+    "sources": [
+      { "position": 1, "url": "https://techcrunch.com/laptops?utm_source=perplexity", "label": "Best Programming Laptops 2026 — TechCrunch", "description": "Latest laptop reviews and recommendations" },
+      { "position": 2, "url": "https://www.youtube.com/watch?v=example", "label": "Best Laptops 2026", "description": "Video review of programming laptops" },
+      { "position": 3, "url": "https://www.reddit.com/r/programming/comments/abc/laptops/", "label": "", "description": "Thread" }
+    ],
+    "related_queries": ["best laptop for python", "macbook vs thinkpad for developers"],
+    "search_model_queries": ["best laptops for programming 2026", "thinkpad x1 carbon linux developer review"]
+  }
+}

@@ -1,0 +1,662 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum RunFrequency {
+  DAILY
+  EVERY_2_DAYS
+  EVERY_3_DAYS
+  WEEKLY
+  MONTHLY
+}
+
+enum ModelTag {
+  chatgpt
+  gemini
+  perplexity
+  google_aio
+  google_ai_mode
+  copilot
+  claude
+}
+
+enum Intent {
+  COMMERCIAL
+  INVESTIGATIONAL
+  INFORMATIONAL
+  NAVIGATIONAL
+}
+
+enum PromptSource {
+  MANUAL
+  SUGGESTED
+  GSC
+  FANOUT
+}
+
+enum RunStatus {
+  QUEUED
+  RUNNING
+  DONE
+  PARTIAL
+  FAILED
+}
+
+enum AnswerStatus {
+  OK
+  NO_AI_RESULT
+  FAILED
+}
+
+enum MentionKind {
+  SELF
+  COMPETITOR
+  UNTRACKED
+}
+
+enum Sentiment {
+  POSITIVE
+  NEUTRAL
+  NEGATIVE
+}
+
+enum OwnerType {
+  SELF
+  COMPETITOR
+  THIRD_PARTY
+}
+
+enum FanoutKind {
+  WEB
+  MAPS
+  SITE
+}
+
+enum Priority {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum Effort {
+  S
+  M
+  L
+}
+
+enum TodoType {
+  ON_PAGE
+  OFF_PAGE
+  TECHNICAL
+}
+
+enum TodoStatus {
+  SUGGESTED
+  TODO
+  DONE
+  ARCHIVED
+}
+
+// ---- Better Auth tables (core + organization plugin), shape matches better-auth 1.7 ----
+
+model User {
+  id            String       @id
+  name          String
+  email         String       @unique
+  emailVerified Boolean      @default(false)
+  image         String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  members       Member[]
+  invitations   Invitation[]
+}
+
+model Session {
+  id                   String   @id
+  expiresAt            DateTime
+  token                String   @unique
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  ipAddress            String?
+  userAgent            String?
+  userId               String
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activeOrganizationId String?
+
+  @@index([userId])
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+}
+
+model Organization {
+  id          String       @id
+  name        String
+  slug        String       @unique
+  logo        String?
+  createdAt   DateTime     @default(now())
+  metadata    String?
+  members     Member[]
+  invitations Invitation[]
+  workspace   Workspace?
+}
+
+model Member {
+  id             String       @id
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role           String       @default("member")
+  createdAt      DateTime     @default(now())
+
+  @@index([organizationId])
+  @@index([userId])
+}
+
+model Invitation {
+  id             String       @id
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  role           String?
+  status         String       @default("pending")
+  expiresAt      DateTime
+  createdAt      DateTime     @default(now())
+  inviterId      String
+  inviter        User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([email])
+}
+
+// ---- App tables ----
+
+// The agency's Google account (Search Console + GA4 read access). Refresh token is AES-GCM encrypted.
+model GoogleConnection {
+  id           String    @id @default(uuid())
+  workspaceId  String    @unique
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  email        String
+  refreshToken String
+  scopes       String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+// The agency. One per auth Organization, provisioned on first API use.
+model Workspace {
+  id             String            @id @default(uuid())
+  name           String
+  organizationId String            @unique
+  organization   Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  whiteLabel     Json? // { agencyName, logoUrl, primaryColor, accentColor }
+  customDomain   String?           @unique // share-report host, e.g. reports.agency.com (Caddy issues its certificate)
+  brands         Brand[]
+  google         GoogleConnection?
+  apiKeys        ApiKey[]
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+}
+
+model Brand {
+  id              String       @id @default(uuid())
+  workspaceId     String
+  workspace       Workspace    @relation(fields: [workspaceId], references: [id])
+  name            String
+  websiteUrl      String
+  domain          String
+  entityId        String? // the brand's own canonical Entity; its mentions are SELF
+  entity          Entity?      @relation(fields: [entityId], references: [id])
+  description     String?
+  industry        String?
+  language        String       @default("en")
+  country         String       @default("US")
+  aliases         String[]
+  frequency       RunFrequency @default(WEEKLY)
+  enabledModels   ModelTag[]
+  isActive        Boolean      @default(true)
+  nextRunAt       DateTime?
+  lastManualRunAt DateTime?
+  insightsAt      DateTime? // last action-plan generation (weekly)
+  gscProperty     String? // Search Console property, e.g. "sc-domain:example.com"
+  ga4PropertyId   String? // GA4 property id, e.g. "properties/123456"
+  crawlerKey      String?      @unique // ingest key for the AI-crawler log Worker / WordPress plugin
+  deletedAt       DateTime?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  competitors Competitor[]
+  topics      Topic[]
+  prompts     Prompt[]
+  runs        Run[]
+  answers     Answer[]
+  todos       Todo[]
+  briefs      ContentBrief[]
+  siteChecks  SiteCheck[]
+  shareLinks  ShareLink[]
+
+  @@index([workspaceId])
+  @@index([isActive, nextRunAt])
+}
+
+// Canonical company/brand across ALL answers (global, not per workspace)
+model Entity {
+  id            String        @id @default(uuid())
+  canonicalName String
+  domain        String?       @unique
+  aliases       EntityAlias[]
+  competitors   Competitor[]
+  mentions      Mention[]
+  brands        Brand[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model EntityAlias {
+  id         String   @id @default(uuid())
+  entityId   String
+  entity     Entity   @relation(fields: [entityId], references: [id])
+  normalized String   @unique
+  raw        String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Competitor {
+  id        String    @id @default(uuid())
+  brandId   String
+  brand     Brand     @relation(fields: [brandId], references: [id])
+  entityId  String
+  entity    Entity    @relation(fields: [entityId], references: [id])
+  isTracked Boolean   @default(false)
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@unique([brandId, entityId])
+}
+
+model Topic {
+  id        String   @id @default(uuid())
+  brandId   String
+  brand     Brand    @relation(fields: [brandId], references: [id])
+  name      String
+  prompts   Prompt[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Prompt {
+  id        String         @id @default(uuid())
+  brandId   String
+  brand     Brand          @relation(fields: [brandId], references: [id])
+  topicId   String?
+  topic     Topic?         @relation(fields: [topicId], references: [id])
+  text      String
+  intent    Intent
+  isActive  Boolean        @default(true)
+  location  String?
+  source    PromptSource   @default(MANUAL)
+  deletedAt DateTime?
+  answers   Answer[]
+  briefs    ContentBrief[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@index([brandId])
+}
+
+model Run {
+  id           String    @id @default(uuid())
+  brandId      String
+  brand        Brand     @relation(fields: [brandId], references: [id])
+  scheduledFor DateTime
+  status       RunStatus @default(QUEUED)
+  startedAt    DateTime?
+  finishedAt   DateTime?
+  promptCount  Int       @default(0)
+  answerCount  Int       @default(0)
+  errorCount   Int       @default(0)
+  note         String? // why a run was skipped or failed as a whole (e.g. budget guard)
+  answers      Answer[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([brandId, scheduledFor])
+}
+
+model Answer {
+  id          String        @id @default(uuid())
+  runId       String
+  run         Run           @relation(fields: [runId], references: [id])
+  promptId    String
+  prompt      Prompt        @relation(fields: [promptId], references: [id])
+  brandId     String
+  brand       Brand         @relation(fields: [brandId], references: [id])
+  model       ModelTag
+  status      AnswerStatus
+  error       String? // last provider error when status = FAILED (admin health page)
+  text        String?
+  rawKey      String?
+  provider    String
+  costCredits Decimal?
+  latencyMs   Int?
+  capturedAt  DateTime
+  extractedAt DateTime?
+  mentions    Mention[]
+  citations   Citation[]
+  fanout      FanoutQuery[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  // capture idempotency key: runId:promptId:model
+  @@unique([runId, promptId, model])
+  @@index([brandId, capturedAt])
+  @@index([promptId, model, capturedAt])
+}
+
+model Mention {
+  id                  String      @id @default(uuid())
+  answerId            String
+  answer              Answer      @relation(fields: [answerId], references: [id])
+  brandId             String
+  entityId            String
+  entity              Entity      @relation(fields: [entityId], references: [id])
+  kind                MentionKind
+  rank                Int
+  totalInAnswer       Int
+  score               Int
+  sentiment           Sentiment
+  sentimentConfidence Float
+  summary             String
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  @@index([brandId, entityId])
+  @@index([answerId])
+}
+
+model Citation {
+  id        String    @id @default(uuid())
+  answerId  String
+  answer    Answer    @relation(fields: [answerId], references: [id])
+  brandId   String
+  url       String
+  domain    String
+  title     String?
+  position  Int
+  ownerType OwnerType
+  siteType  String
+  // a Google blue link shown with an AI Overview check, not a page the AI cited (counted like Peekaboo does, labelled apart)
+  searchResult Boolean @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([brandId, domain])
+  @@index([answerId])
+}
+
+model FanoutQuery {
+  id        String     @id @default(uuid())
+  answerId  String
+  answer    Answer     @relation(fields: [answerId], references: [id])
+  query     String
+  kind      FanoutKind
+  sequence  Int
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@index([answerId])
+}
+
+// Dashboards read ONLY rollups, never raw Mention rows
+model DailyRollup {
+  brandId    String
+  entityId   String
+  model      ModelTag
+  day        DateTime @db.Date
+  answers    Int      @default(0) // OK answers for brand × model × day: the visibility denominator
+  noAiResult Int      @default(0) // engine showed no AI answer (e.g. no AI Overview); excluded from `answers`
+  mentions   Int      @default(0)
+  scoreSum   Int      @default(0)
+  rankSum    Int      @default(0)
+  positive   Int      @default(0)
+  neutral    Int      @default(0)
+  negative   Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@id([brandId, entityId, model, day])
+}
+
+// Per-prompt view of DailyRollup for the prompts page and the prompt × entity matrix. The brand's own entity
+// always has a row (it carries the denominator); other entities only where mentioned.
+model DailyPromptRollup {
+  brandId    String
+  promptId   String
+  entityId   String
+  model      ModelTag
+  day        DateTime @db.Date
+  answers    Int      @default(0)
+  noAiResult Int      @default(0)
+  mentions   Int      @default(0)
+  scoreSum   Int      @default(0)
+  rankSum    Int      @default(0)
+  citations  Int      @default(0) // sources cited across these answers (same on every entity row)
+  positive   Int      @default(0) // sentiment counts, assessed mentions only
+  neutral    Int      @default(0)
+  negative   Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@id([brandId, promptId, entityId, model, day])
+  @@index([brandId, day])
+}
+
+// Citations per page per prompt, so the sources view can group by domain or URL and honor prompt filters.
+model DailyCitationRollup {
+  brandId   String
+  promptId  String
+  url       String
+  domain    String
+  title     String?
+  model     ModelTag
+  day       DateTime @db.Date
+  count     Int      @default(0)
+  searchCount Int    @default(0) // how many of `count` were Google search results rather than AI citations
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([brandId, promptId, url, model, day])
+  @@index([brandId, day])
+}
+
+// Workspace API keys for the public REST API and MCP (handoff §15 Phase 6). Only a SHA-256 hash is stored.
+model ApiKey {
+  id          String    @id @default(uuid())
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  name        String
+  prefix      String // first characters, shown in the UI to tell keys apart
+  hash        String    @unique
+  scope       String // "read" | "write"
+  lastUsedAt  DateTime?
+  revokedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([workspaceId])
+}
+
+// AI crawler visits to a brand's site, per bot × path × day, from the Cloudflare Worker / WordPress plugin.
+model CrawlerHit {
+  brandId   String
+  day       DateTime @db.Date
+  bot       String // e.g. GPTBot, ClaudeBot, PerplexityBot
+  path      String
+  hits      Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([brandId, day, bot, path])
+}
+
+// Peekaboo's own daily visibility for a brand, imported for side-by-side comparison during the parallel run
+// (handoff §17.3). Kept apart from our numbers: different capture method, different sample.
+model PeekabooBaseline {
+  brandId   String
+  day       DateTime @db.Date
+  score     Float
+  createdAt DateTime @default(now())
+
+  @@id([brandId, day])
+}
+
+// Site type per cited domain, decided once (fixed list or the extraction LLM) and reused everywhere.
+model SiteClassification {
+  domain    String   @id
+  siteType  String
+  source    String // "list" | "llm"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Todo {
+  id        String     @id @default(uuid())
+  brandId   String
+  brand     Brand      @relation(fields: [brandId], references: [id])
+  title     String
+  detail    String
+  ruleId    String
+  subject   String
+  priority  Priority
+  effort    Effort
+  gapPoints Float
+  type      TodoType
+  category  String
+  models    ModelTag[]
+  status    TodoStatus @default(SUGGESTED)
+  evidence  Json
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  // dedupe across weeks by ruleId + subject
+  @@unique([brandId, ruleId, subject])
+}
+
+model ContentBrief {
+  id          String   @id @default(uuid())
+  brandId     String
+  brand       Brand    @relation(fields: [brandId], references: [id])
+  promptId    String
+  prompt      Prompt   @relation(fields: [promptId], references: [id])
+  status      String
+  body        Json
+  generatedAt DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SiteCheck {
+  id        String   @id @default(uuid())
+  brandId   String
+  brand     Brand    @relation(fields: [brandId], references: [id])
+  checkedAt DateTime
+  results   Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ShareLink {
+  id          String      @id @default(uuid())
+  brandId     String
+  brand       Brand       @relation(fields: [brandId], references: [id])
+  token       String      @unique
+  visibleTabs String[]
+  revokedAt   DateTime?
+  opens       ShareOpen[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model ShareOpen {
+  id          String    @id @default(uuid())
+  shareLinkId String
+  shareLink   ShareLink @relation(fields: [shareLinkId], references: [id])
+  openedAt    DateTime  @default(now())
+  ipHash      String
+  ua          String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model ProviderUsage {
+  id        String   @id @default(uuid())
+  day       DateTime @db.Date
+  provider  String
+  model     ModelTag
+  calls     Int      @default(0)
+  credits   Decimal  @default(0)
+  usd       Decimal  @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([day, provider, model])
+}
+
+// Super-admin runtime routing (handoff §6.1)
+model ProviderRoute {
+  model     ModelTag @id
+  primary   String
+  fallback  String?
+  enabled   Boolean  @default(true)
+  updatedBy String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  actor     String
+  action    String
+  target    String
+  before    Json?
+  after     Json?
+  createdAt DateTime @default(now())
+}

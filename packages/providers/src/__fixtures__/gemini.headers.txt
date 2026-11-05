@@ -1,0 +1,24 @@
+HTTP/1.1 200 OK
+Date: Tue, 03 Nov 2026 13:26:31 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 10248
+Connection: keep-alive
+X-Powered-By: Express
+Access-Control-Allow-Origin: *
+Access-Control-Expose-Headers: X-Credits-Charged,X-Credits-Remaining,X-Request-ID
+X-Request-ID: 9bfafb4f-896d-4b41-841a-9c8ee0997f9a
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 999
+X-Concurrency-Limit: 1
+X-Concurrency-Current: 1
+X-Concurrency-Remaining: 0
+X-Credits-Remaining: 485
+X-Credits-Charged: 6
+ETag: W/"2808-en0Mdbtej99KH7pntSRu3B+ZpcU"
+X-Latency-Ms: 11822
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
+Access-Control-Allow-Headers: DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization
+Access-Control-Max-Age: 1728000
+

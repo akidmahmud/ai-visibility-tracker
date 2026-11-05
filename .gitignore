@@ -1,0 +1,12 @@
+node_modules
+dist
+.next
+.turbo
+.env
+*.tsbuildinfo
+packages/db/src/generated
+next-env.d.ts
+# reference corpus, cloned separately
+agents/
+.playwright-mcp/
+data/

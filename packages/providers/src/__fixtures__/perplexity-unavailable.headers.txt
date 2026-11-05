@@ -1,0 +1,19 @@
+HTTP/1.1 400 Bad Request
+Date: Tue, 03 Nov 2026 13:26:32 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 300
+Connection: keep-alive
+X-Powered-By: Express
+Access-Control-Allow-Origin: *
+Access-Control-Expose-Headers: X-Credits-Charged,X-Credits-Remaining,X-Request-ID
+X-Request-ID: cb1fe0ed-335e-43e2-8f12-25172b2f545e
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 999
+ETag: W/"12c-g5yCMl58WJu1gpjxa6C/TMV8ex0"
+X-Latency-Ms: 5
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
+Access-Control-Allow-Headers: DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization
+Access-Control-Max-Age: 1728000
+

@@ -1,0 +1,69 @@
+# Production stack for the KVM 2 VPS (handoff §2). Usage, from the repo root:
+#   cp .env.example .env   # fill in; set APP_DOMAIN, ACME_EMAIL, BETTER_AUTH_URL=https://$APP_DOMAIN
+#   docker compose -f infra/docker-compose.prod.yml up -d --build
+# Only Caddy publishes ports. Postgres, Redis and Bull Board stay on the internal network.
+x-app: &app
+  build: { context: .., dockerfile: Dockerfile }
+  image: avt-app
+  env_file: ../.env
+  environment:
+    DATABASE_URL: postgresql://avt:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}@postgres:5432/avt
+    REDIS_URL: redis://redis:6379
+    API_URL: http://api:4000/api
+    PUBLIC_API_URL: https://${APP_DOMAIN}/api
+    RAW_DIR: /data/raw
+  restart: unless-stopped
+  depends_on:
+    migrate: { condition: service_completed_successfully }
+    redis: { condition: service_started }
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment: { POSTGRES_USER: avt, POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}", POSTGRES_DB: avt }
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck: { test: ["CMD-SHELL", "pg_isready -U avt"], interval: 5s, retries: 20 }
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes: [redisdata:/data]
+    restart: unless-stopped
+
+  migrate:
+    <<: *app
+    restart: "no"
+    depends_on: { postgres: { condition: service_healthy } }
+    command: ["pnpm", "--filter", "@avt/db", "migrate:deploy"]
+
+  api:
+    <<: *app
+    working_dir: /app/apps/api
+    command: ["node", "dist/main.js"]
+
+  worker:
+    <<: *app
+    working_dir: /app/apps/worker
+    command: ["node", "dist/main.js"]
+    volumes: [rawdata:/data/raw]
+
+  web:
+    <<: *app
+    working_dir: /app/apps/web
+    command: ["pnpm", "start"]
+
+  caddy:
+    image: caddy:2-alpine
+    ports: ["80:80", "443:443"]
+    environment: { APP_DOMAIN: "${APP_DOMAIN:?set APP_DOMAIN}", ACME_EMAIL: "${ACME_EMAIL:?set ACME_EMAIL}" }
+    volumes: [./Caddyfile:/etc/caddy/Caddyfile:ro, caddy_data:/data, caddy_config:/config]
+    depends_on: [web, api]
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  redisdata:
+  rawdata:
+  caddy_data:
+  caddy_config:

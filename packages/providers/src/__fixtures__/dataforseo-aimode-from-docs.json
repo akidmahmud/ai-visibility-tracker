@@ -1,0 +1,39 @@
+{
+  "_note": "Shape from docs.dataforseo.com/v3/serp/google/ai_mode/live/advanced (Nov 2026). Hand-built because the docs' own example is invalid JSON; no DataForSEO login yet. Replace with a real recording once one exists.",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "cost": 0.004,
+  "tasks": [
+    {
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0.004,
+      "result": [
+        {
+          "keyword": "best aeo agency for phoenix local business",
+          "item_types": ["ai_overview"],
+          "items": [
+            {
+              "type": "ai_overview",
+              "markdown": "Top picks for **Phoenix** local businesses include AEO Collective and First Page Sage.",
+              "items": [
+                {
+                  "type": "ai_overview_element",
+                  "markdown": "Top picks for **Phoenix** local businesses include AEO Collective and First Page Sage.",
+                  "references": [
+                    { "type": "ai_overview_reference", "source": "AEO Collective", "domain": "aeo-collective.com", "url": "https://aeo-collective.com/", "title": "AEO Collective", "text": "" },
+                    { "type": "ai_overview_reference", "source": "First Page Sage", "domain": "firstpagesage.com", "url": "https://firstpagesage.com/", "title": "", "text": "" }
+                  ]
+                }
+              ],
+              "references": [
+                { "type": "ai_overview_reference", "source": "Reddit", "domain": "reddit.com", "url": "https://www.reddit.com/r/phoenix/comments/x/", "title": "Phoenix marketing agencies", "text": "" },
+                { "type": "ai_overview_reference", "source": "AEO Collective", "domain": "aeo-collective.com", "url": "https://aeo-collective.com/", "title": "AEO Collective", "text": "" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

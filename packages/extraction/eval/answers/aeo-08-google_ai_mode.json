@@ -1,0 +1,12 @@
+{
+  "engine": "google_ai_mode",
+  "industry": "marketing-agency",
+  "prompt": "Best AEO/GEO agency for an arizona local business?",
+  "text": "When looking for an **AEO (Answer Engine Optimization)** and **GEO (Generative Engine Optimization)** agency for an Arizona-based local business, you want a partner that understands how to position your brand inside AI-driven responses (like ChatGPT, Google Search Generative Experience/AI Overviews, and Perplexity) rather than just traditional blue-link SEO.\n\nTop-rated Arizona agencies specializing in AI search optimization, LLM optimization, and local GEO include:\n\n* * *\n\nLifted Websites\n\n _Lifted Websites_ (Scottsdale, AZ) – Operating since 2009, they focus on conversion-driven web design and advanced local search, explicitly incorporating **AI SEO, LLM optimization, and GEO** for local small-to-medium businesses and service providers. [Best AI Search Optimization Agencies in Arizona 2026](https://agencies.semrush.com/list/ai-optimization/arizona/)\n\n* * *\n\nCiphers Digital Marketing\n\n _Ciphers Digital Marketing_ (Gilbert, AZ) – Known for combining **AI-powered technical SEO** and localized search strategies tailored to service-based and competitive regional markets. [Best AI Search Optimization Agencies in Arizona 2026](https://agencies.semrush.com/list/ai-optimization/arizona/)\n\n* * *\n\nDiamond Arrow Digital Marketing\n\n _Diamond Arrow Digital Marketing_ (Gilbert, AZ) – Highly rated locally with a strong track record in **Local SEO and AI search adaptation**, helping brick-and-mortar and service businesses get cited by modern search algorithms. [Best AI Search Optimization Agencies in Arizona 2026](https://agencies.semrush.com/list/ai-optimization/arizona/)\n\nTo help narrow down the best fit, tell me:\n\n  * What **industry or niche** is your local business in?\n  * Are you targeting a **specific city** (e.g., Phoenix, Scottsdale, Tucson) or statewide?\n  * Do you need **just AEO/GEO** or a full overhaul including website and traditional local SEO?",
+  "expected": [
+    "Lifted Websites",
+    "Ciphers Digital Marketing",
+    "Diamond Arrow Digital Marketing"
+  ],
+  "labeledBy": "Claude, 2026-11-04 (recommended entities in order of first appearance; AI assistants, Google, Yelp and names only inside citation titles excluded)"
+}
