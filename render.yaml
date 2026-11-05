@@ -1,0 +1,52 @@
+# Demo deployment on Render's free plan (not production: production runs on the VPS with infra/docker-compose.prod.yml).
+# Free plan has no background workers, so the worker runs inside the API's web service. The service sleeps after
+# 15 idle minutes (first request then takes ~1 min), the free database expires after 30 days, and free Key Value
+# keeps no data across restarts.
+services:
+  - type: web
+    name: avt-api
+    runtime: node
+    plan: free
+    healthCheckPath: /api/health
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm turbo run build --filter=@avt/api --filter=@avt/worker
+    startCommand: pnpm --filter @avt/db exec prisma migrate deploy && (cd apps/worker && node dist/main.js &) && node apps/api/dist/main.js
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: avt-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: avt-redis
+          property: connectionString
+      - key: RAW_DIR
+        value: /tmp/raw
+      - key: ENCRYPTION_KEY
+        generateValue: true
+      - key: EXTRACTION_MODEL
+        value: nvidia/nemotron-3.5-super-vl:free
+      - key: PROVIDER_CONCURRENCY_JSON
+        value: '{"cloro":1}'
+      - key: MONTHLY_CREDIT_BUDGET
+        value: "400"
+      - key: CLORO_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: SUPER_ADMIN_EMAILS
+        sync: false
+      - key: PUBLIC_API_URL
+        sync: false
+
+  - type: keyvalue
+    name: avt-redis
+    plan: free
+    maxmemoryPolicy: noeviction # BullMQ must never lose queued jobs to eviction
+    ipAllowList: []
+
+databases:
+  - name: avt-db
+    plan: free
