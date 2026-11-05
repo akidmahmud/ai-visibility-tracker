@@ -10,3 +10,6 @@ next-env.d.ts
 agents/
 .playwright-mcp/
 data/
+
+# demo deploy: Render database URL (never commit)
+.render-db-url
